@@ -1,6 +1,5 @@
 package src;
 
-
 import javax.swing.ImageIcon;
 
 import src.Util.Button;
@@ -16,7 +15,7 @@ public class MenuPanel extends Panel{
 	
 	public MenuPanel(){
 		super(null, Util.rect(0,0,800,600));
-		
+		hidePanel();
 		loadImages();
 		initComponents();
 		addComponents();
@@ -33,26 +32,26 @@ public class MenuPanel extends Panel{
 	}
 
 	private void initComponents() {
-		exit = new Button(exitORG, exitRO, Util.rect(425, 427, 99, 25));
-		credits = new Button(creditsORG, creditsRO, Util.rect(286, 369, 128, 25));
-		help = new Button(helpORG, helpRO, Util.rect(388, 305, 100, 28));
-		play = new Button(playORG, playRO, Util.rect(300, 228, 95, 23));
+		exit = new Button(exitORG, exitRO, Util.rect(575, 472, 142, 76));
+		credits = new Button(creditsORG, creditsRO, Util.rect(415, 472, 142, 76));
+		help = new Button(helpORG, helpRO, Util.rect(257, 472, 142, 76)); //524
+		play = new Button(playORG, playRO, Util.rect(96, 472, 142, 76)); //420
 		
-		infos = new Label(infoIcon[0], Util.rect(234, 538, 354, 46));
+		infos = new Label(infoIcon[0], Util.rect(143, 560, 519, 24));
 		infos.setVisible(false);
 		menubg = new Label(bg, Util.rect(0, 0,800, 600));
 	}
 
 	private void loadImages() {
-		bg = new ImageIcon("images/menu/menu.gif");
-		playORG = new ImageIcon("images/menu/playORG.png");	
-		playRO = new ImageIcon("images/menu/playRO.png");
-		helpORG = new ImageIcon("images/menu/helpORG.png");
-		helpRO = new ImageIcon("images/menu/helpRO.png");
-		creditsORG = new ImageIcon("images/menu/creditsORG.png");
-		creditsRO = new ImageIcon("images/menu/creditsRO.png");
-		exitORG = new ImageIcon("images/menu/exitORG.png");
-		exitRO = new ImageIcon("images/menu/exitRO.png");
+		bg = new ImageIcon("images/menu/bg.gif");
+		playORG = new ImageIcon("images/menu/main panel buttons/play.png");	
+		playRO = new ImageIcon("images/menu/main panel buttons/play_hover.png");
+		helpORG = new ImageIcon("images/menu/main panel buttons/help.png");
+		helpRO = new ImageIcon("images/menu/main panel buttons/help_hover.png");
+		creditsORG = new ImageIcon("images/menu/main panel buttons/credits.png");
+		creditsRO = new ImageIcon("images/menu/main panel buttons/credits_hover.png");
+		exitORG = new ImageIcon("images/menu/main panel buttons/quit.png");
+		exitRO = new ImageIcon("images/menu/main panel buttons/quit_hover.png");
 		for(int i=0; i<4; i++)
 			infoIcon[i] = new ImageIcon("images/menu/info"+(i+1)+".png");
 	}

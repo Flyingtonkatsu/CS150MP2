@@ -4,7 +4,8 @@ public class Agent {
 	
 	int cash;							//pera
 	int ap;								//remaining number of actions of agent
-	int startpos;						//starting point of agent (1..4)
+	int startx;							//starting point of agent
+	int starty;
 	String name;						//agent name
 	int stress;							//current stress
 	int maxstress;						//max stress bago mag-faint
@@ -16,13 +17,11 @@ public class Agent {
 	Item inventory[];					//Inventory ng agent, size 2
 	Buff bufflist[] = {};				//List of buffs; explain ko next time
 	
-	public Agent(int maxstress, String name, int startpos){
+	public Agent(int maxstress, String name, int startx, int starty){
 		this.cash = 35;
 		this.ap = 0;
 		this.stress = 0;
 		this.name = name;
-		this.x = 0;
-		this.y = 0;
 		this.maxstress = maxstress;
 		this.inventory = new Item[2];
 		this.traveling = false;
@@ -32,7 +31,8 @@ public class Agent {
 		this.ssp = false;
 		this.pe = false;
 		this.nstp = false;
-		this.startpos = startpos;
+		this.startx = startx;
+		this.starty = starty;
 	}
 	
 	public void setPos(int newx, int newy){

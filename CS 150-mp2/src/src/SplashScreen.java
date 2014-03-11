@@ -30,6 +30,7 @@ public class SplashScreen extends JWindow{
 		setVisible(false);
 		dispose();
 		gameFrame.setVisible(true);
+		gameFrame.intropanel.startIntro();
 	}
 
 	private void loadGame() {
@@ -55,6 +56,6 @@ public class SplashScreen extends JWindow{
 	}
 
 	private void loadComponentsAndImage() {
-		splash = new Util.Label(new ImageIcon("images/splashScreen.gif"), Util.rect(0, 0, 400, 250));
+		splash = new Util.Label(new ImageIcon("images/splash.gif"), Util.rect(0, 0, 400, 250));
 	}
 }

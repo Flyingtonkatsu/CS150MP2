@@ -37,22 +37,18 @@ public class Controller implements ActionListener, MouseListener{
 	public void checkSource(MouseEvent e) {
 		if(e.getSource() == frame.menupanel.play){
 			frame.menupanel.infos.setIcon(frame.menupanel.infoIcon[0]);
-			frame.menupanel.infos.setBounds(234, 538, 354, 46);
 		}
 		
 		else if(e.getSource() == frame.menupanel.help){
 			frame.menupanel.infos.setIcon(frame.menupanel.infoIcon[1]);
-			frame.menupanel.infos.setBounds(247, 530, 322, 65);
 		}
 		
 		else if(e.getSource() == frame.menupanel.credits){
 			frame.menupanel.infos.setIcon(frame.menupanel.infoIcon[2]);
-			frame.menupanel.infos.setBounds(261, 542, 285, 39);
 		}
 		
 		else if(e.getSource() == frame.menupanel.exit){
 			frame.menupanel.infos.setIcon(frame.menupanel.infoIcon[3]);
-			frame.menupanel.infos.setBounds(226, 535, 374, 49);
 		}
 	}
 	
@@ -61,7 +57,7 @@ public class Controller implements ActionListener, MouseListener{
 		if(event.getSource() == frame.menupanel.play){
 			frame.menupanel.hidePanel();
 			frame.gamepanel.showPanel();
-			frame.window.showWindow();
+			//frame.window.showWindow();
 		}
 		
 		else if(event.getSource() == frame.menupanel.help){
@@ -86,6 +82,11 @@ public class Controller implements ActionListener, MouseListener{
 		
 		else if(event.getSource() == frame.helppanel.menu){
 			frame.helppanel.hidePanel();
+			frame.menupanel.showPanel();
+		}
+		
+		else if(event.getSource() == frame.gamepanel.pause){
+			frame.gamepanel.hidePanel();
 			frame.menupanel.showPanel();
 		}
 	}

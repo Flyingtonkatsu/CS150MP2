@@ -15,7 +15,7 @@ public class Container extends Panel{
 	Label bg;
 	
 	public Container(){
-		super(null, Util.rect(0,0,480,240));
+		super(null, Util.rect(0,0,400,200));
 
 		loadImages();
 		initComponents();
@@ -32,7 +32,7 @@ public class Container extends Panel{
 	}
 	
 	private void initComponents() {
-		txtArea = new TextArea(Util.rect(19, 51, 303, 162));
-		bg = new Util.Label(compilerBG, Util.rect(0, 0, 480, 240));
+		txtArea = new TextArea(Util.rect(8, 38, 265, 135));
+		bg = new Label(compilerBG, Util.rect(0, 0, 400, 200));
 	}
 }

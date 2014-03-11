@@ -28,13 +28,13 @@ public class HelpPanel extends Panel{
 	}
 
 	private void initComponenets() {
-		menu = new Button(menuORG, menuRO, Util.rect(10, 550, 123, 40));
+		menu = new Button(menuORG, menuRO, Util.rect(602, 500, 197, 99));
 		bg = new Label(bgIcon, Util.rect(0,0,800,600));
 	}
 
 	private void loadImages() {
 		bgIcon = new ImageIcon("images/help/bg.png");
-		menuRO=new ImageIcon("images/menuRo.png");
-		menuORG=new ImageIcon("images/menuOrg.png");
+		menuRO=new ImageIcon("images/help/menuRo.png");
+		menuORG=new ImageIcon("images/help/menuOrg.png");
 	}
 }

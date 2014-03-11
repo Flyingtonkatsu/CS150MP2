@@ -17,19 +17,16 @@ public class GameLogic {
 	
 	public void initPlayers(){
 		player = new Agent[4];
-		player[0] = new Agent(11, "Athlete", 1);
-		player[1] = new Agent(9, "Slacker", 2);
-		player[2] = new Agent(10, "Genius", 3);
-		player[3] = new Agent(10, "Rich Girl", 4);
+		player[0] = new Agent(11, "Athlete", 0, 0);
+		player[1] = new Agent(9, "Slacker", 3, 0);
+		player[2] = new Agent(10, "Genius", 7, 0);
+		player[3] = new Agent(10, "Rich Girl", 10, 0);
 		
 		//Set starting locations for players:
 		board.agentMove(player[1], 3, 0);
 		board.agentMove(player[2], 7, 0);
 		board.agentMove(player[3], 10, 0);
 		board.agentMove(player[0], 0, 0);
-		
-		System.out.println("\nGame start!");
-		board.debug_printBoard();
 	}
 	
 	public void initBoard(){
@@ -37,6 +34,7 @@ public class GameLogic {
 	}
 	
 	public void gameStart(){
+		System.out.println("\nGame start!");
 		while(!mainloop());
 	}
 	
@@ -57,7 +55,7 @@ public class GameLogic {
 		 * 
 		 */
 		
-		// Pang test lang ng move commands:
+		// Pang test lang ng commands:
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		try{
 			System.out.print("Input command: ");
@@ -66,24 +64,22 @@ public class GameLogic {
 			else if(input.contentEquals("interact")) interact(br);
 			
 		}catch(Exception e){}
-		// Endtest
 	}
 	
 	private void ActionPhase(){
-		// for each action in actlist:
-		//	- execute action
-		//		- move1
-		//		- move2
-		//		- move3
-		//		- item
-		//		- power
-		//		- interact
+		
 		// for each agent, check bufflist; modify AP of agent, reduce duration in bufflist
 		// define actlist = list of player actions in order
 		// for each action in actlist do:
 		// 	execute actions
 		//		Item commands: refer to item table
 		//		Admin commands: refer to admin table
+		//		- move1
+		//		- move2
+		//		- move3
+		//		- item
+		//		- power
+		//		- interact
 	}
 	
 	private boolean ExecutionPhase(){

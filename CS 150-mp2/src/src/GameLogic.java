@@ -3,8 +3,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
-
 import data.*;
+import agents.*;
 
 public class GameLogic {
 	
@@ -21,10 +21,10 @@ public class GameLogic {
 		board = new GameBoard();
 		player = new Agent[4];
 		
-		player[0] = new Agent(11, "Athlete", 0, 0);
-		player[1] = new Agent(9, "Slacker", 3, 0);
-		player[2] = new Agent(10, "Genius", 7, 0);
-		player[3] = new Agent(10, "Rich Girl", 10, 0);
+		player[3] = new Genius(10, 0);
+		player[1] = new Slacker(3, 0);
+		player[2] = new Athlete(7, 0);
+		player[0] = new RichKid(0, 0);
 		
 		//Set starting locations for players:
 		board.agentMove(player[1], 3, 0);
@@ -63,8 +63,7 @@ public class GameLogic {
 	
 	private void ActionPhase(){
 		for(int i=0; i<4; i++){
-			if(!player[i].isFainted()) player[i].setAP(5);
-			else player[i].setAP(0);
+			if(!player[i].isFainted()) player[i].actionProcess();
 		}
 		// for each agent, check bufflist; modify AP of agent, reduce duration in bufflist
 		// define actlist = list of player actions in order
@@ -153,7 +152,7 @@ public class GameLogic {
 	}
 	
 	private void exeAgent(Agent a){
-		a.executionProcess();
+		a.execProcess();
 	}
 	
 	private void actMove(Agent a, int x, int y){

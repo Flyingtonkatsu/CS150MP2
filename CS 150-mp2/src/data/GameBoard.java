@@ -12,6 +12,7 @@
 package data;
 
 import java.io.BufferedReader;
+import data.Cell;
 import java.io.FileReader;
 import java.util.Scanner;
 
@@ -121,12 +122,23 @@ public class GameBoard {
 	private void agentCollide(Agent bully, Agent target){
 		int x = target.x, y = target.y;
 		printf("Collision detected: " + bully.name + " vs. " + target.name);
+		
+		// Kung naka-jeep yung bully, ggyung target.
+		if(bully.isTraveling()){
+			target.addStress(20);
+			cell[target.x][target.y].Occupy(bully);
+			bully.setPos(x, y);
+			bully.traveling = false;
+			return;
+		}
+		
+		// else kung hindi, switch lang sila ng position
 		cell[bully.x][bully.y].Occupy(target);
 		cell[target.x][target.y].Occupy(bully);
 		target.setPos(bully.x, bully.y);
 		bully.setPos(x, y);
 		
-		target.applyStress(1);
+		target.addStress(1);
 	}
 	
 	public void agentInteract(Agent a){

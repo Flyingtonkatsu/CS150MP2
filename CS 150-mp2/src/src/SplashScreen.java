@@ -40,8 +40,6 @@ public class SplashScreen extends JWindow{
 		helppanel = new HelpPanel();
 		creditspanel = new CreditsPanel();
 		gamepanel = new GamePanel();
-		controller = new Controller(gameFrame);
-		
 	}
 
 	private void setSplashScreen() {

@@ -1,41 +1,55 @@
 package src;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Scanner;
 import data.*;
 import agents.*;
 
-public class GameLogic {
+
+public class GameLogic extends Thread{
 	
-	Agent player[];		//list of players
+	Agent players[];		//list of players
 	GameBoard board;
-	String[] cmdlist;
+	String[][] cmdlist;
+	boolean running = false;
+	public GameFrame frame;
+	private int player; 
+	int[] order = {0, 1, 2, 3};
 	
-	public GameLogic(){
+	public GameLogic(GameFrame f){
+		frame = f;
 		initGameElements();
+	}
+	
+	public void stopRunning(){
+		running = false;
+	}
+	
+	public void run(){
 		gameStart();
 	}
 	
 	public void initGameElements(){
 		board = new GameBoard();
-		player = new Agent[4];
+		players = new Agent[4];
 		
-		player[3] = new Genius(10, 0);
-		player[1] = new Slacker(3, 0);
-		player[2] = new Athlete(7, 0);
-		player[0] = new RichKid(0, 0);
+		running = true;
 		
-		//Set starting locations for players:
-		board.agentMove(player[1], 3, 0);
-		board.agentMove(player[2], 7, 0);
-		board.agentMove(player[3], 10, 0);
-		board.agentMove(player[0], 0, 0);
+		cmdlist = new String[4][];
+		
+		players[0] = new Genius(this, 10, 0, frame.gamepanel.genius);
+		players[1] = new Slacker(this, 3, 0, frame.gamepanel.slacker);
+		players[2] = new Athlete(this, 7, 0, frame.gamepanel.athlete);
+		players[3] = new RichKid(this, 0, 0, frame.gamepanel.richKid);
+		
+		//Set starting locations for playerss:
+		board.agentMove(players[1], 3, 0);
+		board.agentMove(players[2], 7, 0);
+		board.agentMove(players[3], 10, 0);
+		board.agentMove(players[0], 0, 0);
 	}
 	
 	public void gameStart(){
 		printf("\nGame start!");
-		while(!mainloop());
+		while(!mainloop() & running);
 	}
 	
 	private boolean mainloop(){
@@ -46,27 +60,50 @@ public class GameLogic {
 	}
 	
 	private void CommandPhase(){
-		/*
-		//	take input
+		
 		for(int i=0; i < 4; i++){
-			// open compiler for player[i]
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {}
+			cmdlist[i] = new String[100];
+			GameFrame.getWindow().setTitle("Input Box  (Player "+(i+1)+")");
+			player = i;
+			GameFrame.getWindow().showWindow();
 		}
-		// form actlist here
-		 	each element in the String[] actlist should have format:
-		 	<playernumber>.<command>.<arguments>
-		 		<playernumber> = int from 0..3
-		 		<command> = "move", "item", "interact", "power"
-		 */
 		
-		
+		for(int i=0; i<4; i++){
+			for(int j = i+1; j<4; j++){
+				if(players[order[j]].getStress() > players[order[i]].getStress()){
+					int temp = order[i];
+					order[i] = order[j];
+					order[j] = temp;
+				}
+			}
+		}
 	}
 	
 	private void ActionPhase(){
+		int maxln = -1;
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {}
+		
 		for(int i=0; i<4; i++){
-			if(!player[i].isFainted()) player[i].actionProcess();
+			actAgent(players[order[i]]);
+			maxln = maxln < cmdlist[i].length ? cmdlist[i].length : maxln;
 		}
-		// for each agent, check bufflist; modify AP of agent, reduce duration in bufflist
-		// define actlist = list of player actions in order
+		
+		printf("maxln = " + maxln);
+		
+		for(int i=0; i<maxln; i++){
+			for(int j=0; j<4; j++){
+				if(cmdlist[j].length > i)
+					processCommand(players[j], cmdlist[j][i]);
+			}
+		}
+		/* for each agent, check bufflist; modify AP of agent, reduce duration in bufflist
+		// define actlist = list of players actions in order
 		// for each action in actlist do:
 		// 	execute actions
 		//		Item commands: refer to item table
@@ -78,27 +115,40 @@ public class GameLogic {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String input = "";
 		do{
-			System.out.print("Input command for player "+ 0 +": ");
+			System.out.print("Input command for players "+ 0 +": ");
 			try{
 			input = br.readLine();
 			} catch(IOException e){}
-		} while(!processCommand(player[0], input));
+		} while(!processCommand(players[0], input));
+		*/
 	}
 	
 	private boolean ExecutionPhase(){
 		for(int i=0; i<4; i++){
+			Agent a = players[i];
 		// process jeepneys;
-			if(player[i].isTraveling()) exeJeep(player[i]);
+			if(a.isTraveling()) exeJeep(a);
 		// enlistment
 		// incoming stress:
-			exeAgent(player[i]);
-		// check for faint
+			exeAgent(a);
+		// check for faint:
+			if(a.isFainted()) {
+				a.traveling = true;
+				board.agentMove(a, a.startx, a.starty);
+			}
 		// check win con:
 		// 		returns true pag may nanalo na
 		}
 		return false;
 	}
 	
+
+	public void getCommands(String text) {
+		cmdlist[player] = Compiler.parser(text);
+		for(int i=0; i<cmdlist[player].length ; i++){
+			printf("Command " + i + " for player " + player + ": " + cmdlist[player][i]);
+		}
+	}
 	
 	// Language definition and processing:
 	//	takes the current Agent's turn, and input string from user
@@ -115,10 +165,10 @@ public class GameLogic {
 			if(!s.hasNext()){ printf("Missing arguments"); return false;}
 			i = s.next();
 			
-			if(i.trim().matches("u")) dy = -1;
-			else if(i.trim().matches("d")) dy = 1;
-			else if(i.trim().matches("r")) dx = 1;
-			else if(i.trim().matches("l")) dx = -1;
+			if(i.trim().matches("up")) dy = -1;
+			else if(i.trim().matches("down")) dy = 1;
+			else if(i.trim().matches("right")) dx = 1;
+			else if(i.trim().matches("left")) dx = -1;
 			else{ printf("Invalid argument for move command.");  return false;}
 			
 			for(int spaces=0; spaces < num; spaces++){
@@ -132,12 +182,9 @@ public class GameLogic {
 
 		}
 		else if(i.matches("power")){
-
+			
 		}
-		else if(i.matches("showpos")){
-			printf("Player positions: ");
-			for(int j = 0; j<4; j++) printf("P["+j+"]:" + player[j].x + "," + player[j].y);
-		}
+		
 		else{
 			printf("Invalid command.");
 			return false;
@@ -155,6 +202,10 @@ public class GameLogic {
 		a.execProcess();
 	}
 	
+	private void actAgent(Agent a){
+		a.actionProcess();
+	}
+	
 	private void actMove(Agent a, int x, int y){
 		board.agentMove(a, x, y);
 	}
@@ -162,10 +213,7 @@ public class GameLogic {
 	private void actInteract(Agent a){
 		board.agentInteract(a);
 	}
-	
-	
-	
-	
+		
 	public void printf(String s){
 		System.out.println(s);
 	}
@@ -173,4 +221,5 @@ public class GameLogic {
 	public String coors(int x, int y){
 		return "(" + x + "," + y + ")";
 	}
+
 }

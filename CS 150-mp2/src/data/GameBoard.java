@@ -102,6 +102,9 @@ public class GameBoard {
 			cell[x][y].Occupy(a);
 			a.setPos(x,y);
 			a.traveling = false;
+			
+			// repaint here; pass x and y of agent to board :>
+			
 			printf("Move command for "+ a.name + ":" + coors(x,y));
 		}
 		
@@ -111,6 +114,7 @@ public class GameBoard {
 		//Impassable cell:
 		else if(!isCellPassable(x,y)) printf("Impassable cell" + coors(x,y));
 	}
+	
 	
 	public void agentJeep(Agent a){
 		Cell c = cell[a.x][a.y];
@@ -123,9 +127,9 @@ public class GameBoard {
 		int x = target.x, y = target.y;
 		printf("Collision detected: " + bully.name + " vs. " + target.name);
 		
-		// Kung naka-jeep yung bully, ggyung target.
+		// Kung naka-jeep yung bully, gg yung target.
 		if(bully.isTraveling()){
-			target.addStress(20);
+			target.addStress(25);
 			cell[target.x][target.y].Occupy(bully);
 			bully.setPos(x, y);
 			bully.traveling = false;

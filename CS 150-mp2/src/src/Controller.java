@@ -5,9 +5,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JOptionPane;
+
 public class Controller implements ActionListener, MouseListener{
 	
 	GameFrame frame;
+	GameLogic logic;
 	
 	public Controller(GameFrame frame){
 		this.frame = frame;
@@ -55,9 +58,14 @@ public class Controller implements ActionListener, MouseListener{
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if(event.getSource() == frame.menupanel.play){
+
 			frame.menupanel.hidePanel();
 			frame.gamepanel.showPanel();
-			//frame.window.showWindow();
+
+			JOptionPane.showMessageDialog( null  , "Game is starting!");
+			
+			logic = new GameLogic(frame);
+			logic.start();
 		}
 		
 		else if(event.getSource() == frame.menupanel.help){
@@ -86,8 +94,21 @@ public class Controller implements ActionListener, MouseListener{
 		}
 		
 		else if(event.getSource() == frame.gamepanel.pause){
+			logic.stopRunning();
 			frame.gamepanel.hidePanel();
 			frame.menupanel.showPanel();
+		}
+		
+		else if(event.getSource() == frame.container.execute){
+			String input = frame.container.txtArea.getText();
+			
+			//if(Compiler.errorCheck(input)){
+				logic.getCommands(input);
+				GameFrame.getWindow().hideWindow();
+			//}
+			//else {
+				//print error
+			//}
 		}
 	}
 

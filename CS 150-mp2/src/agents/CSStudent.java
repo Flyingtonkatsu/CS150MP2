@@ -1,5 +1,7 @@
 package agents;
 
+import src.GameLogic;
+import src.Util.Label;
 import data.Agent;
 
 // Agent: CS STUDENT
@@ -7,9 +9,9 @@ import data.Agent;
 //		"There is no spoon. And sleep."
 
 public class CSStudent extends Agent{
-	
-	public CSStudent(int startx, int starty){
-		super(9, "CS Student", startx, starty);
+	final static String name = "CS Student";
+	public CSStudent(GameLogic gameLogic, int startx, int starty, Label label){
+		super(gameLogic, 9, "CS Student", startx, starty, label);
 	}
 	
 	@Override
@@ -20,6 +22,7 @@ public class CSStudent extends Agent{
 	}
 	
 	private void abil_Hacking(){
-		if(getStress() <= 6 & getStress() >= 3) execCooldown();
+		if(getStress() <= 6 & getStress() >= 3) 
+			execCooldown();
 	}
 }

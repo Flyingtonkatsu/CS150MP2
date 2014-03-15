@@ -1,25 +1,30 @@
 package data;
 
+import src.GameLogic;
+import src.Util.Label;
+
 public class Agent {
 	
+	GameLogic logic;
 	int cash;							//pera
 	int ap;								//remaining number of actions of agent
-	int startx;							//starting point of agent
-	int starty;
+	public int startx;							//starting point of agent
+	public int starty;
 	int cooldown;						//cooldown of admin power;
 	public String name;					//agent name
 	int stress;							//current stress
 	int maxstress;						//max stress bago mag-faint
 	int incstress;						//incoming stress, evaluated on Exec. phase
 	boolean fainted;
-	boolean traveling;					//marked true kung sasakay ng jeep yung agent
+	public boolean traveling;					//marked true kung sasakay ng jeep yung agent
 	public int x;								//x position of agent
 	public int y;								//y position of agent
 	boolean mst, ssp, ah, pe, nstp;		//listahan ng enlisted classes
 	Item inventory[];					//Inventory ng agent, size 2
 	Buff bufflist[];				//List of buffs; explain ko next time
+	Label label;
 	
-	public Agent(int maxstress, String name, int startx, int starty){
+	public Agent(GameLogic logic, int maxstress, String name, int startx, int starty, Label label){
 		this.cash = 35;
 		this.ap = 5;
 		this.stress = 0;
@@ -37,9 +42,23 @@ public class Agent {
 		this.startx = startx;
 		this.starty = starty;
 		this.fainted = false;
+		this.logic = logic;
+		this.label = label;
+	}
+	
+	public void actionProcess(){
+		setAP(5);
+		execBuffs();
+		recover();
+	}
+
+	public void execProcess(){
+		execStress();
+		execCooldown();
 	}
 	
 	public void setPos(int newx, int newy){
+		label.setBounds(logic.frame.gamepanel.Xbound(newx), logic.frame.gamepanel.Ybound(newy) , 35 , 35);
 		x = newx;
 		y = newy;
 	}
@@ -47,6 +66,7 @@ public class Agent {
 	public void addCash(int i){
 		cash = cash + i;
 	}
+	
 	
 	public void addAP(int i){
 		ap = ap + i;
@@ -60,26 +80,27 @@ public class Agent {
 		return ap;
 	}
 	
-	public int execStress(){
-		stress =+ incstress;
+	
+	public void execStress(){
+		stress = stress + incstress;
 		incstress = 0;
-		return stress;
+		System.out.println(name.charAt(0) + ": stress: " + stress);
+		if(stress > maxstress) faint();
 	}
 	
-	public void execProcess(){
-		execStress();
-		execCooldown();
-	}
 	
 	public int execCooldown(){
 		if(cooldown > 0) cooldown--;
 		return cooldown;
 	}
-	
-	public void actionProcess(){
-		setAP(5);
-		processBuffs();
-		recover();
+
+	public void execBuffs(){
+		for(int i=0; i<10; i++){
+			if(bufflist[i] != null){
+				addAP(bufflist[i].value);
+				if(bufflist[i].countdown()) bufflist[i] = null;
+			}
+		}
 	}
 	
 	public void addBuff(Buff b){
@@ -91,14 +112,6 @@ public class Agent {
 		}
 	}
 	
-	public void processBuffs(){
-		for(int i=0; i<10; i++){
-			if(bufflist[i] != null){
-				addAP(bufflist[i].value);
-				if(bufflist[i].countdown()) bufflist[i] = null;
-			}
-		}
-	}
 	
 	
 	public boolean giveItem(Item newitem){
@@ -119,8 +132,13 @@ public class Agent {
 		return incstress;
 	}
 	
-	public void addStress(int astress){
-		incstress = incstress + astress;
+	public void faint(){
+		fainted = true;
+	}
+	
+	public void addStress(int i){
+		System.out.println("Add stress: " + i + " to " + name);
+		incstress = incstress + i;
 	}
 	
 	public void enlistClass(int subj){

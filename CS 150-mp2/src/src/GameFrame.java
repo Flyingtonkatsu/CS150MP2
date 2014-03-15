@@ -14,13 +14,13 @@ import src.Util.Panel;
 public class GameFrame extends JFrame{
 	
 	MenuPanel menupanel;
-	GamePanel gamepanel;
+	public GamePanel gamepanel;
 	CreditsPanel creditspanel;
 	HelpPanel helppanel;
 	IntroPanel intropanel;
 	
 	Container container;
-	static InputWindow window;
+	private static InputWindow window;
 	static GameFrame self;
 	
 	public GameFrame(){
@@ -44,6 +44,8 @@ public class GameFrame extends JFrame{
 	}
 
 	public void addListener(Controller controller) {
+		container.execute.addActionListener(controller);
+		
 		gamepanel.pause.addActionListener(controller);
 		
 		helppanel.menu.addActionListener(controller);
@@ -79,28 +81,42 @@ public class GameFrame extends JFrame{
 		intropanel = new IntroPanel();
 		
 		container = new Container();
-		window = new InputWindow();
-		window.setSize(480, 240);
+		
+		setWindow(new InputWindow());
+		getWindow().setSize(480, 240);
+		
 		new Controller(this);
 	}
 	
+	public static InputWindow getWindow() {
+		return window;
+	}
+
+	public static void setWindow(InputWindow window) {
+		GameFrame.window = window;
+	}
+
 	class InputWindow extends JDialog{
 		
 		public InputWindow(){
-			super(self, true);
+			super(self, false);
 			setLayout(new BorderLayout());
+			setTitle("Input Box (Player 1)");
 			setVisible(false);
 			setResizable(false);
 		}
 		
 		public void showWindow(){
-			
 			add(container);
 			setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 			pack();
 			setLocationRelativeTo(null);
 			setVisible(true);
-			
+		}
+		
+		public void hideWindow(){
+			container.txtArea.setText("");
+			setVisible(false);
 		}
 	}
 	

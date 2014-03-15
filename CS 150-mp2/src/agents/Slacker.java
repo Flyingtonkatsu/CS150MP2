@@ -1,5 +1,7 @@
 package agents;
 
+import src.GameLogic;
+import src.Util.Label;
 import data.Agent;
 
 //Agent: Slacker
@@ -7,9 +9,10 @@ import data.Agent;
 //		"I make procrastinating an art form, and this is my masterpiece."
 
 public class Slacker extends Agent{
+	final static String name = "Slacker";
 	
-	public Slacker(int startx, int starty){
-		super(9, "Slacker", startx, starty);
+	public Slacker(GameLogic gameLogic, int startx, int starty, Label label) {
+		super(gameLogic, 10, name, startx, starty, label);
 	}
 	
 	@Override

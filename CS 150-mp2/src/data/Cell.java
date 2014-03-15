@@ -33,9 +33,14 @@ public class Cell {
 	
 	public Agent getOccupant() { return occupant; }
 	
-	public void Occupy(Agent a) { occupant = a; }
+	public void Occupy(Agent a) { 
+		occupant = a;
+		onLand();
+	}
 	
 	public int getMeta() { return meta; }
+	
+	public void onLand(){}
 	
 	
 }

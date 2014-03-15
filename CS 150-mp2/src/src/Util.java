@@ -66,7 +66,7 @@ public class Util {
 /*						Label						*/
 	
 	@SuppressWarnings("serial")
-	static class Label extends JLabel{
+	public static class Label extends JLabel{
 		
 		public Label(ImageIcon lblIcon, Rectangle bound){
 			super();

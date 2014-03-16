@@ -102,9 +102,6 @@ public class GameBoard {
 			cell[x][y].Occupy(a);
 			a.setPos(x,y);
 			a.traveling = false;
-			
-			// repaint here; pass x and y of agent to board :>
-			
 			printf("Move command for "+ a.name + ":" + coors(x,y));
 		}
 		
@@ -139,9 +136,14 @@ public class GameBoard {
 		// else kung hindi, switch lang sila ng position
 		cell[bully.x][bully.y].Occupy(target);
 		cell[target.x][target.y].Occupy(bully);
+		
+		target.animateMovement(bully.x, bully.y);
+		bully.animateMovement(x, y);
+		
 		target.setPos(bully.x, bully.y);
 		bully.setPos(x, y);
 		
+		target.traveling = false;
 		target.addStress(1);
 	}
 	

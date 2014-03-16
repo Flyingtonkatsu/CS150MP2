@@ -58,9 +58,33 @@ public class Agent {
 	}
 	
 	public void setPos(int newx, int newy){
-		label.setBounds(logic.frame.gamepanel.Xbound(newx), logic.frame.gamepanel.Ybound(newy) , 35 , 35);
 		x = newx;
 		y = newy;
+		label.setBounds(logic.frame.gamepanel.Xbound(x), logic.frame.gamepanel.Ybound(y) , 35 , 35);
+	}
+	
+	public void animateMovement(int newx, int newy){
+		final int framerate = 15;
+		int tempx = 67 + x * 35, tempy = 2 + y * 35;
+		int targx = (newx - x) * 35, targy = (newy - y) * 35;
+		int dx = targx / 10 , dy = targy / 10;
+		
+		
+		
+		for(int i = 0; i < 10; i++){
+			tempx = tempx + dx;
+			tempy = tempy + dy;
+			label.setBounds(tempx, tempy, 35 , 35);
+			try {
+				Thread.sleep(framerate);
+			} catch (InterruptedException e) {}
+		}
+		label.setBounds(logic.frame.gamepanel.Xbound(newx), logic.frame.gamepanel.Ybound(newy) , 35 , 35);
+		try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void addCash(int i){

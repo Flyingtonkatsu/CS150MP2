@@ -35,10 +35,10 @@ public class GameLogic extends Thread{
 		
 		cmdlist = new String[4][];
 		
-		players[0] = new Genius(this, 10, 0, frame.gamepanel.genius);
+		players[2] = new Genius(this, 7, 0, frame.gamepanel.genius);
 		players[1] = new Slacker(this, 3, 0, frame.gamepanel.slacker);
-		players[2] = new Athlete(this, 7, 0, frame.gamepanel.athlete);
-		players[3] = new RichKid(this, 0, 0, frame.gamepanel.richKid);
+		players[0] = new Athlete(this, 0, 0, frame.gamepanel.athlete);
+		players[3] = new RichKid(this, 10, 0, frame.gamepanel.richKid);
 		
 		//Set starting locations for playerss:
 		board.agentMove(players[1], 3, 0);
@@ -62,7 +62,6 @@ public class GameLogic extends Thread{
 	private void CommandPhase(){
 		
 		for(int i=0; i < 4; i++){
-			
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {}
@@ -81,6 +80,7 @@ public class GameLogic extends Thread{
 				}
 			}
 		}
+		
 	}
 	
 	private void ActionPhase(){
@@ -88,6 +88,7 @@ public class GameLogic extends Thread{
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {}
+		
 		
 		for(int i=0; i<4; i++){
 			actAgent(players[order[i]]);
@@ -207,6 +208,7 @@ public class GameLogic extends Thread{
 	}
 	
 	private void actMove(Agent a, int x, int y){
+		a.animateMovement(x, y);
 		board.agentMove(a, x, y);
 	}
 	

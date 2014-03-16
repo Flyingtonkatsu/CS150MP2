@@ -99,7 +99,7 @@ public class GameFrame extends JFrame{
 	class InputWindow extends JDialog{
 		
 		public InputWindow(){
-			super(self, false);
+			super(self, true);
 			setLayout(new BorderLayout());
 			setTitle("Input Box (Player 1)");
 			setVisible(false);

@@ -4,7 +4,6 @@ import src.GameLogic;
 import src.Util.Label;
 
 public class Agent {
-	
 	GameLogic logic;
 	int cash;							//pera
 	int ap;								//remaining number of actions of agent

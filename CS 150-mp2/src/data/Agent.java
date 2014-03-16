@@ -47,9 +47,11 @@ public class Agent {
 	}
 	
 	public void actionProcess(){
-		setAP(5);
-		execBuffs();
-		recover();
+		if(fainted) recover();
+		else{
+			setAP(5);
+			execBuffs();
+		}
 	}
 
 	public void execProcess(){
@@ -63,12 +65,11 @@ public class Agent {
 		label.setBounds(logic.frame.gamepanel.Xbound(x), logic.frame.gamepanel.Ybound(y) , 35 , 35);
 	}
 	
-	public void animateMovement(int newx, int newy){
+	public void animateMove(int newx, int newy) throws InterruptedException{
 		final int framerate = 15;
 		int tempx = 67 + x * 35, tempy = 2 + y * 35;
 		int targx = (newx - x) * 35, targy = (newy - y) * 35;
 		int dx = targx / 10 , dy = targy / 10;
-		
 		
 		
 		for(int i = 0; i < 10; i++){
@@ -80,11 +81,7 @@ public class Agent {
 			} catch (InterruptedException e) {}
 		}
 		label.setBounds(logic.frame.gamepanel.Xbound(newx), logic.frame.gamepanel.Ybound(newy) , 35 , 35);
-		try {
-			Thread.sleep(250);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		Thread.sleep(250);
 	}
 	
 	public void addCash(int i){
@@ -195,5 +192,7 @@ public class Agent {
 	
 	public void recover(){
 		fainted = false;
+		stress = 0;
+		ap = 0;
 	}
 }

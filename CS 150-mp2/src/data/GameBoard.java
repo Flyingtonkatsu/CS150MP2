@@ -12,7 +12,6 @@
 package data;
 
 import java.io.BufferedReader;
-import data.Cell;
 import java.io.FileReader;
 import java.util.Scanner;
 
@@ -46,6 +45,7 @@ public class GameBoard {
 				}
 				else{
 					c = cell[x][y] = new Cell(input, x, y);
+					
 					if(input == WALL_CHARACTER){ c.celltype = ' '; c.passable = false; }
 					
 					if (input == ENLIST_CHARACTER) meta = true;
@@ -91,18 +91,27 @@ public class GameBoard {
 		
 	}
 	
-	public void agentMove(Agent a, int x, int y){
-		if(a == null | x < 0 | x > 11 | y < 0 | y > 16){ 
+	public void agentMove(Agent a, int x, int y) throws InterruptedException{
+		if(x < 0 | x > 10 | y < 0 | y > 15){ 
 			printf("Invalid cell: " + coors(x,y)); 
 			return;
 		}
 		
 		if(!isCellOccupied(x,y) && isCellPassable(x,y)){
-			cell[a.x][a.y].Occupy(null);
+			a.animateMove(x, y);
+			if(cell[a.x][a.y].occupant == a) cell[a.x][a.y].Occupy(null);
 			cell[x][y].Occupy(a);
 			a.setPos(x,y);
 			a.traveling = false;
 			printf("Move command for "+ a.name + ":" + coors(x,y));
+			
+			if(cell[x][y].celltype == FOOD_CHARACTER){
+				a.addStress(- (a.getStress() / 2));
+			}
+			else if (cell[x][y].celltype == ITEM_CHARACTER){
+				// give item to char
+			}
+			
 		}
 		
 		// Collision handling:
@@ -113,21 +122,23 @@ public class GameBoard {
 	}
 	
 	
-	public void agentJeep(Agent a){
+	public void agentJeep(Agent a) throws InterruptedException{
 		Cell c = cell[a.x][a.y];
 		Cell t = getNextTerminal(c);
 		agentMove(a, t.x, t.y);
 		a.traveling = false;
 	}
 	
-	private void agentCollide(Agent bully, Agent target){
+	private void agentCollide(Agent bully, Agent target) throws InterruptedException{
 		int x = target.x, y = target.y;
 		printf("Collision detected: " + bully.name + " vs. " + target.name);
 		
 		// Kung naka-jeep yung bully, gg yung target.
 		if(bully.isTraveling()){
 			target.addStress(25);
+			cell[bully.x][bully.y].Occupy(null);
 			cell[target.x][target.y].Occupy(bully);
+			bully.animateMove(target.x, target.y);
 			bully.setPos(x, y);
 			bully.traveling = false;
 			return;
@@ -137,8 +148,8 @@ public class GameBoard {
 		cell[bully.x][bully.y].Occupy(target);
 		cell[target.x][target.y].Occupy(bully);
 		
-		target.animateMovement(bully.x, bully.y);
-		bully.animateMovement(x, y);
+		target.animateMove(bully.x, bully.y);
+		bully.animateMove(x, y);
 		
 		target.setPos(bully.x, bully.y);
 		bully.setPos(x, y);
@@ -160,7 +171,6 @@ public class GameBoard {
 			}
 			else if(celltype == JEEP_CHARACTER){
 				if(a.rideJeep()){
-					c.Occupy(null);
 					printf(a.name + ": Traveling to next terminal.");
 				}
 				else printf("You require additional pylons.");

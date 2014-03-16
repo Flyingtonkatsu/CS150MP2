@@ -11,9 +11,11 @@ public class Controller implements ActionListener, MouseListener{
 	
 	GameFrame frame;
 	GameLogic logic;
+	Object lock;
 	
 	public Controller(GameFrame frame){
 		this.frame = frame;
+		this.lock = new Object();
 		frame.addListener(this);
 	}
 	
@@ -64,7 +66,7 @@ public class Controller implements ActionListener, MouseListener{
 
 			JOptionPane.showMessageDialog( null  , "Game is starting!");
 			
-			logic = new GameLogic(frame);
+			logic = new GameLogic(frame, lock);
 			logic.start();
 		}
 		
@@ -94,7 +96,10 @@ public class Controller implements ActionListener, MouseListener{
 		}
 		
 		else if(event.getSource() == frame.gamepanel.pause){
-			logic.stopRunning();
+			logic.interrupt();
+			//logic.stopRunning();
+			GameFrame.getWindow().hideWindow();
+			
 			frame.gamepanel.hidePanel();
 			frame.menupanel.showPanel();
 		}
@@ -102,10 +107,13 @@ public class Controller implements ActionListener, MouseListener{
 		else if(event.getSource() == frame.container.execute){
 			String input = frame.container.txtArea.getText();
 			
-			//if(Compiler.errorCheck(input)){
+			if(Compiler.errorCheck(input)){
 				logic.getCommands(input);
 				GameFrame.getWindow().hideWindow();
-			//}
+				synchronized(lock){
+					lock.notify();
+				}
+			}
 			//else {
 				//print error
 			//}

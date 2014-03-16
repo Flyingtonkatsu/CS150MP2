@@ -25,7 +25,12 @@ public class GamePanel extends Panel{
 		loadImages();
 		initComponents();
 		addComponents();
-		//addMouseListener(new Clicks());
+		
+		
+		ImageIcon fx = new ImageIcon("images/play/buttonORG.png");
+		Label effect = new Label(fx, Util.rect(300, 300, 200, 200));
+		
+		add(effect);
 	}
 
 	private void loadImages() {
@@ -55,12 +60,6 @@ public class GamePanel extends Panel{
 		pause = new Button(pauseORG, pauseRO, Util.rect(602, 500, 197, 99));
 		bgLbl = new Label(bg, Util.rect(0,0,800,600));
 	}
-	
-	/*private class Clicks extends MouseAdapter{
-		public void mouseClicked(MouseEvent e){
-			System.out.println("x: "+e.getX()+"\ty: "+e.getY());
-		}
-	}*/
 	
 	public int Xbound(int x){
 		return locX+tileSize*x;

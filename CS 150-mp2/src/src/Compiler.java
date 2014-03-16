@@ -24,7 +24,7 @@ public class Compiler {
 		String tokens[] = input.split("\n");
 		String command[];
 		String args[];
-		for(int i = 0; i < tokens.length; i++){
+		for(int i = 0; i < tokens.length & i < 10; i++){
 			tokens[i] = tokens[i].trim();
 			if(tokens[i].equals("")) isCorrect = true;
 			if((StringUtils.countMatches(tokens[i], "(") == 1) && (StringUtils.countMatches(tokens[i], ")") == 1)){
@@ -83,7 +83,7 @@ public class Compiler {
 	// Returns array of commands in CORRECT FORMAT (no extra spaces, all lower case)
 	public static String [] parser(String input){
 		String [] commands = input.split("\n");
-		for(int i = 0; i < commands.length; i++){
+		for(int i = 0; i < commands.length & i < 10; i++){
 			commands[i] = commands[i].trim();
 			commands[i] = commands[i].replace(" ", "");
 			commands[i] = commands[i].replace("(", ".");

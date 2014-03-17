@@ -3,6 +3,7 @@ package src;
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
 
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -12,23 +13,23 @@ import src.Util.Panel;
 
 @SuppressWarnings("serial")
 public class GameFrame extends JFrame{
-	
+
 	MenuPanel menupanel;
 	public GamePanel gamepanel;
 	CreditsPanel creditspanel;
 	HelpPanel helppanel;
 	IntroPanel intropanel;
-	
+
 	Container container;
 	private static InputWindow window;
 	static GameFrame self;
-	
+
 	public GameFrame(){
 		super("Haggard Games");
-		
+
 		initComponents();
 		addComponents();
-		
+
 		setFrame();
 	}
 
@@ -45,18 +46,18 @@ public class GameFrame extends JFrame{
 
 	public void addListener(Controller controller) {
 		container.execute.addActionListener(controller);
-		
+
 		gamepanel.pause.addActionListener(controller);
-		
+
 		helppanel.menu.addActionListener(controller);
-		
+
 		creditspanel.menu.addActionListener(controller);
-		
+
 		menupanel.play.addActionListener(controller);
 		menupanel.help.addActionListener(controller);
 		menupanel.credits.addActionListener(controller);
 		menupanel.exit.addActionListener(controller);
-		
+
 		menupanel.play.addMouseListener(controller);
 		menupanel.help.addMouseListener(controller);
 		menupanel.credits.addMouseListener(controller);
@@ -73,21 +74,21 @@ public class GameFrame extends JFrame{
 
 	private void initComponents() {
 		self = this;
-		
+
 		creditspanel = new CreditsPanel();
 		helppanel = new HelpPanel();
 		gamepanel = new GamePanel();
 		menupanel = new MenuPanel();
 		intropanel = new IntroPanel();
-		
+
 		container = new Container();
-		
+
 		setWindow(new InputWindow());
 		getWindow().setSize(480, 240);
-		
+
 		new Controller(this);
 	}
-	
+
 	public static InputWindow getWindow() {
 		return window;
 	}
@@ -97,7 +98,7 @@ public class GameFrame extends JFrame{
 	}
 
 	class InputWindow extends JDialog{
-		
+
 		public InputWindow(){
 			super(self, false);
 			setLayout(new BorderLayout());
@@ -105,7 +106,7 @@ public class GameFrame extends JFrame{
 			setVisible(false);
 			setResizable(false);
 		}
-		
+
 		public void showWindow(){
 			add(container);
 			setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -113,18 +114,19 @@ public class GameFrame extends JFrame{
 			setLocationRelativeTo(null);
 			setVisible(true);
 		}
-		
+
 		public void hideWindow(){
 			container.txtArea.setText("");
 			setVisible(false);
 		}
 	}
-	
+
 	class IntroPanel extends Panel implements Runnable{
 		Util.Label logo;
 		ImageIcon imageLogo[] = new ImageIcon[2];
-		
-		
+		Clip introMusic;
+
+
 		public IntroPanel() {
 			super(null, Util.rect(0, 0, 800, 600));
 			loadImages();
@@ -139,20 +141,25 @@ public class GameFrame extends JFrame{
 		private void load(){
 			logo = new Util.Label(imageLogo[0], Util.rect(0, 0, 800, 600));
 			add(logo);
+			introMusic = Util.createClip("intro");
 		}
-		
+
 		public void startIntro(){
 			new Thread(this).start();
 		}
-		
+
 		public void run(){
+			Util.normalSoundPlay(introMusic);
 			for(int i = 0; i < 10; i++, Util.delay(0.250))
 				logo.setIcon(imageLogo[i%2]);
 			self.menupanel.showPanel();
 			hidePanel();
+			introMusic.stop();
+			introMusic = null;
 			logo = null;
 			imageLogo[0] = imageLogo[1] = null;
 			Util.collectGarbage();
+			menupanel.startMenuSound();
 		}
 	}
 }

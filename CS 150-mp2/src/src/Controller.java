@@ -141,6 +141,60 @@ public class Controller implements ActionListener, MouseListener{
 				JOptionPane.showMessageDialog(null, "Error in compiling your move(s). Try again!");
 			}
 		}
+		
+		else if(event.getSource() == frame.helppanel.next){
+			if(frame.helppanel.num==0){
+				frame.helppanel.prev.setIcon(frame.helppanel.prevORG);
+				frame.helppanel.prev.setRolloverIcon(frame.helppanel.prevRO);
+				
+				frame.helppanel.next.setIcon(frame.helppanel.nxtORG);
+				frame.helppanel.next.setRolloverIcon(frame.helppanel.nxtRO);
+				frame.helppanel.bg.setIcon(frame.helppanel.help[1]);
+				frame.helppanel.num++;
+			}
+			else if(frame.helppanel.num==1){
+				frame.helppanel.prev.setIcon(frame.helppanel.prevORG);
+				frame.helppanel.prev.setRolloverIcon(frame.helppanel.prevRO);
+				
+				frame.helppanel.next.setIcon(frame.helppanel.nxtNOT);
+				frame.helppanel.next.setRolloverEnabled(false);
+				frame.helppanel.bg.setIcon(frame.helppanel.help[2]);
+				frame.helppanel.num++;
+			}
+			else if(frame.helppanel.num==2){
+				frame.helppanel.prev.setIcon(frame.helppanel.prevORG);
+				frame.helppanel.prev.setRolloverIcon(frame.helppanel.prevRO);
+				
+				frame.helppanel.next.setIcon(frame.helppanel.nxtNOT);
+			}
+		}
+		
+		else if(event.getSource() == frame.helppanel.prev){
+			if(frame.helppanel.num==0){
+				frame.helppanel.next.setIcon(frame.helppanel.nxtORG);
+				frame.helppanel.next.setRolloverIcon(frame.helppanel.nxtRO);
+				
+				frame.helppanel.prev.setIcon(frame.helppanel.prevNOT);
+			}
+			else if(frame.helppanel.num==1){
+				frame.helppanel.next.setIcon(frame.helppanel.nxtORG);
+				frame.helppanel.next.setRolloverIcon(frame.helppanel.nxtRO);
+				
+				frame.helppanel.prev.setIcon(frame.helppanel.prevNOT);
+				frame.helppanel.prev.setRolloverEnabled(false);
+				frame.helppanel.bg.setIcon(frame.helppanel.help[0]);
+				frame.helppanel.num--;
+			}
+			else if(frame.helppanel.num==2){
+				frame.helppanel.next.setIcon(frame.helppanel.nxtORG);
+				frame.helppanel.next.setRolloverIcon(frame.helppanel.nxtRO);
+				
+				frame.helppanel.prev.setIcon(frame.helppanel.prevORG);
+				frame.helppanel.prev.setRolloverIcon(frame.helppanel.prevRO);
+				frame.helppanel.bg.setIcon(frame.helppanel.help[1]);
+				frame.helppanel.num--;
+			}
+		}
 	}
 
 }

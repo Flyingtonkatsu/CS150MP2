@@ -112,6 +112,13 @@ public class Controller implements ActionListener, MouseListener{
 			
 			frame.helppanel.hidePanel();
 			frame.menupanel.showPanel();
+			
+			frame.helppanel.num=0;
+			frame.helppanel.bg.setIcon(frame.helppanel.help[0]);
+			frame.helppanel.prev.setIcon(frame.helppanel.prevNOT);
+			frame.helppanel.prev.setRolloverEnabled(false);
+			frame.helppanel.next.setIcon(frame.helppanel.nxtORG);
+			frame.helppanel.next.setRolloverIcon(frame.helppanel.nxtRO);
 		}
 
 		else if(event.getSource() == frame.gamepanel.pause){

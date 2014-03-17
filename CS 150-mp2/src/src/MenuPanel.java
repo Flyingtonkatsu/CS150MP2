@@ -1,5 +1,6 @@
 package src;
 
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 
 import src.Util.Button;
@@ -7,11 +8,12 @@ import src.Util.Label;
 import src.Util.Panel;
 
 @SuppressWarnings("serial")
-public class MenuPanel extends Panel{
+public class MenuPanel extends Panel implements Runnable{
 	
 	ImageIcon bg, playORG, playRO, helpORG, helpRO, creditsORG, creditsRO, exitORG, exitRO, infoIcon[] = new ImageIcon[4];
 	Label menubg, infos;
 	Button play, help, credits, exit;
+	Clip menuSound;
 	
 	public MenuPanel(){
 		super(null, Util.rect(0,0,800,600));
@@ -40,6 +42,8 @@ public class MenuPanel extends Panel{
 		infos = new Label(infoIcon[0], Util.rect(143, 560, 519, 24));
 		infos.setVisible(false);
 		menubg = new Label(bg, Util.rect(0, 0,800, 600));
+		
+		menuSound = Util.createClip("menu");
 	}
 
 	private void loadImages() {
@@ -54,5 +58,15 @@ public class MenuPanel extends Panel{
 		exitRO = new ImageIcon("images/menu/main panel buttons/quit_hover.png");
 		for(int i=0; i<4; i++)
 			infoIcon[i] = new ImageIcon("images/menu/info"+(i+1)+".png");
+	}
+
+	@Override
+	public void run() {
+		Util.normalSoundPlay(menuSound);
+		Util.loopSoundPlay(menuSound);
+	}
+	
+	public void startMenuSound(){
+		new Thread(this).start();
 	}
 }

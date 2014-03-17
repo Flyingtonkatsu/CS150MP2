@@ -137,9 +137,9 @@ public class Controller implements ActionListener, MouseListener{
 					lock.notify();
 				}
 			}
-			//else {
-				//print error
-			//}
+			else {
+				JOptionPane.showMessageDialog(null, "Error in compiling your move(s). Try again!");
+			}
 		}
 	}
 

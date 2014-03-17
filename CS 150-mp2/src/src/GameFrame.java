@@ -50,6 +50,8 @@ public class GameFrame extends JFrame{
 		gamepanel.pause.addActionListener(controller);
 
 		helppanel.menu.addActionListener(controller);
+		helppanel.next.addActionListener(controller);
+		helppanel.prev.addActionListener(controller);
 
 		creditspanel.menu.addActionListener(controller);
 
